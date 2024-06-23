@@ -28,8 +28,8 @@ app.use('/result' , resultRoutes);
 mongoose.connect(process.env.MONGO_URL).then(() => {
     console.log("mongo DB connected");
 
-    app.listen(5000, () => {
-        console.log('Listening to port 5000');
+    app.listen(process.env.port, () => {
+        console.log('Listening to port');
     })
 }).catch((err) => {
     console.log("mongo DB error", err)
