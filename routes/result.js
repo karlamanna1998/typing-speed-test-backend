@@ -8,8 +8,15 @@ const resultModel = require('../model/resultsModel')
 router.post('/add' , authWithUser , async (req, res) => {
     const {user , cpm ,  wpm , accuracy } = req.body;
 
+
     console.log(user , cpm , wpm , accuracy);
+    const userAgent = req.headers['user-agent'];
+
     try{
+
+        if (!userAgent || userAgent.includes('PostmanRuntime')) {
+           return res.status(403).send('Access forbidden for Postman or similar tools.');
+        }
 
         let result = await  resultModel.findOne({user});
 
@@ -36,6 +43,7 @@ router.post('/add' , authWithUser , async (req, res) => {
 
 
 router.get('/rankings', async (req, res) => {
+    console.log( req.headers)
     try {
         const rankings = await resultModel.aggregate([
             {
