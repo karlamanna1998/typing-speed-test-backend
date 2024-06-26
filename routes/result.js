@@ -16,7 +16,7 @@ router.post('/add' , authWithUser , async (req, res) => {
 
     try{
 
-        if (!userAgent || userAgent.includes('PostmanRuntime') ||  || userAgent.includes('Go-http-client')) {
+        if (!userAgent || userAgent.includes('PostmanRuntime')   || userAgent.includes('Go-http-client')) {
            return res.status(403).json({error : 'Access forbidden' , agent : userAgent});
         }
 
