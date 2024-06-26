@@ -12,6 +12,8 @@ router.post('/add' , authWithUser , async (req, res) => {
     console.log(user , cpm , wpm , accuracy);
     const userAgent = req.headers['user-agent'];
 
+    console.log(userAgent)
+
     try{
 
         if (!userAgent || userAgent.includes('PostmanRuntime')) {
