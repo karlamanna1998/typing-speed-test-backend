@@ -17,7 +17,7 @@ router.post('/add' , authWithUser , async (req, res) => {
     try{
 
         if (!userAgent || userAgent.includes('PostmanRuntime')) {
-           return res.status(403).send('Access forbidden');
+           return res.status(403).json(error : 'Access forbidden' , agent : userAgent);
         }
 
         let result = await  resultModel.findOne({user});
@@ -35,7 +35,7 @@ router.post('/add' , authWithUser , async (req, res) => {
             result.save()
         }
 
-        res.status(200).json({ message: 'Result added/updated successfully', result });
+        res.status(200).json({ message: 'Result added/updated successfully', result , agent : userAgent });
 
     }catch(err){
         console.error(err);
