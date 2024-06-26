@@ -17,7 +17,7 @@ router.post('/add' , authWithUser , async (req, res) => {
     try{
 
         if (!userAgent || userAgent.includes('PostmanRuntime')) {
-           return res.status(403).json(error : 'Access forbidden' , agent : userAgent);
+           return res.status(403).json({error : 'Access forbidden' , agent : userAgent});
         }
 
         let result = await  resultModel.findOne({user});
