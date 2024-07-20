@@ -12,11 +12,30 @@ router.post('/add' , authWithUser , async (req, res) => {
     console.log(user , cpm , wpm , accuracy);
     const userAgent = req.headers['user-agent'];
 
+      const allowedBrowsers = [
+        'Mozilla', 
+        'AppleWebKit', 
+        'Gecko',     
+    ];
+
+    const blockedAgents = [
+        'PostmanRuntime',
+        'Go-http-client',
+        'curl',
+        'Wget',
+        'python-requests',
+    ];
+
+    const isBrowser = allowedBrowsers.some(browser => userAgent.includes(browser));
+    const isBlockedAgent = blockedAgents.some(agent => userAgent.includes(agent));
+
+    console.log(userAgent)
+
     try{
 
-        // if (!userAgent || userAgent.includes('PostmanRuntime')) {
-        //    return res.status(403).send('Access forbidden');
-        // }
+        if (!userAgent || !isBrowser || isBlockedAgent) {
+           return res.status(403).json({error : 'Access forbidden' });
+        }
 
         let result = await  resultModel.findOne({user : user._id});
 
