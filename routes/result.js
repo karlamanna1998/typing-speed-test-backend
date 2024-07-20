@@ -14,11 +14,11 @@ router.post('/add' , authWithUser , async (req, res) => {
 
     try{
 
-        if (!userAgent || userAgent.includes('PostmanRuntime')) {
-           return res.status(403).send('Access forbidden');
-        }
+        // if (!userAgent || userAgent.includes('PostmanRuntime')) {
+        //    return res.status(403).send('Access forbidden');
+        // }
 
-        let result = await  resultModel.findOne({user});
+        let result = await  resultModel.findOne({user : user._id});
 
         if(result){
             result.cpm = cpm;
@@ -27,7 +27,7 @@ router.post('/add' , authWithUser , async (req, res) => {
             result.save()
         }else{
             result = new resultModel({
-                user , cpm , wpm , accuracy
+                user : user._id , cpm , wpm , accuracy
             })
 
             result.save()

@@ -5,6 +5,7 @@ require('dotenv').config('.env');
 const bodyParser = require('body-parser')
 const authRoutes = require('./routes/auth');
 const resultRoutes = require('./routes/result');
+const roomRoutes = require('./routes/room');
 const cors = require('cors');
 
 app.use(cors())
@@ -23,7 +24,7 @@ app.use(bodyParser.json())
 
 app.use('/auth' , authRoutes);
 app.use('/result' , resultRoutes);
-
+app.use('/room' , roomRoutes);
 
 mongoose.connect(process.env.MONGO_URL).then(() => {
     console.log("mongo DB connected");

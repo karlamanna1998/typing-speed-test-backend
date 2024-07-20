@@ -9,7 +9,7 @@ const authWithUser = async (req , res , next)=>{
 
         const user =  await userModel.findOne({username : decoded.username})
         if(user){
-          req.body.user = user._id;
+          req.body.user = user;
           next()
         }else{
           return res.status(404).send({message : "User not found" , status : 404});
