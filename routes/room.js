@@ -30,7 +30,7 @@ router.post('/create-room', authWithUser, async (req, res) => {
 
         getUser.save()
 
-        res.status(200).json({ data: newRoom });
+        res.status(200).json({ data: newRoom , message : 'Room created successfully' });
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: "Room creation failed", status: 500 })
@@ -54,7 +54,7 @@ router.post('/join-room', authWithUser, async (req, res) => {
 
         getUser.save()
 
-        res.status(200).json({ message: 'Successfully joined room' });
+        res.status(200).json({ message: 'Successfully joined room' , data : roomExist });
     } catch (err) {
         console.log(err);
         return res.status(500).json({ message: "Room creation failed", status: 500 })
@@ -83,10 +83,12 @@ router.post('/leave-room', authWithUser, async (req, res) => {
 
 router.get('/roomWise-rank', authWithUser, async (req, res) => {
     try {
-
         const { user } = req.body
+        const room = await roomsModel.findById(user.room_id)
 
-        console.log(user)
+        if(!room) {
+            return res.status(500).json({ message: "Room not found", status: 500 }) 
+        }
 
         const result   = await resultModel.aggregate([
             {
@@ -105,8 +107,8 @@ router.get('/roomWise-rank', authWithUser, async (req, res) => {
             },
             {
                 $project: {
-                    _id: 0, // Exclude the _id field
-                    username: '$userDetails.username', // Assuming the user schema has a 'username' field
+                    _id: 0, 
+                    username: '$userDetails.username', 
                     cpm: 1,
                     wpm: 1,
                     accuracy: 1,
@@ -114,16 +116,27 @@ router.get('/roomWise-rank', authWithUser, async (req, res) => {
                 }
             },
             {
-                $sort: { averageScore: -1 } // Sort by average score in descending order
+                $sort: { averageScore: -1 } 
             }
         ])
 
 
-        res.status(200).json({ message: 'Successfully left room' , data : result });
+        res.status(200).json({ message: 'Room Result Fetched' , data : 
+            {
+                result : result,
+                roomName : room.room_name,
+                roomCode : room.room_code
+            } 
+         });
     } catch (err) {
         console.log(err);
-        return res.status(500).json({ message: "Room creation failed", status: 500 })
+        return res.status(500).json({ message: "Room result failed", status: 500 })
     }
+})
+
+router.get('/userDetails' , authWithUser ,  async (req , res) => {
+    const { user } = req.body;
+    res.status(200).json({data : user.room_id , message: "user details"})
 })
 
 

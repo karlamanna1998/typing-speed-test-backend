@@ -78,8 +78,8 @@ router.get('/rankings', async (req, res) => {
             },
             {
                 $project: {
-                    _id: 0, // Exclude the _id field
-                    username: '$userDetails.username', // Assuming the user schema has a 'username' field
+                    _id: 0, 
+                    username: '$userDetails.username', 
                     cpm: 1,
                     wpm: 1,
                     accuracy: 1,
